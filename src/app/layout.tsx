@@ -66,7 +66,7 @@ export default async function RootLayout({
             <strong className="text-heading-2">KindeAuth</strong>
             <p className="footer-tagline text-body-3">
               Visit our{" "}
-              <Link className="link" href="https://kinde.com/docs">
+              <Link className="link" href="https://docs.kinde.com/">
                 help center
               </Link>
             </p>
