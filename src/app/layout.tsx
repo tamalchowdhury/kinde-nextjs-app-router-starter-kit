@@ -72,7 +72,7 @@ export default async function RootLayout({
             </p>
 
             <small className="text-subtle">
-              © 2023 KindeAuth, Inc. All rights reserved
+              © {new Date().getFullYear()} KindeAuth, Inc. All rights reserved
             </small>
           </div>
         </footer>
