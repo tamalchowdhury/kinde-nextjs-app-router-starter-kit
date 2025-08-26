@@ -64,6 +64,7 @@ export default async function Dashboard() {
 
       <div>
         <h3>Add a new account to track</h3>
+
         <form action={addAction}>
           <label htmlFor="name">Name:</label>
           <input type="text" name="name" required placeholder="Personal" />
