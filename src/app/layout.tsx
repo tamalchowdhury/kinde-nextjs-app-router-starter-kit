@@ -3,6 +3,7 @@ import {
   RegisterLink,
   LoginLink,
   LogoutLink,
+  PortalLink,
 } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Link from "next/link";
@@ -52,8 +53,8 @@ export default async function RootLayout({
                     <p className="text-heading-2">
                       {user?.given_name} {user?.family_name}
                     </p>
-
-                    <LogoutLink className="text-subtle">Log out</LogoutLink>
+                    <LogoutLink className="text-subtle">Log out</LogoutLink> -{" "}
+                    <PortalLink className="text-subtle">My Account</PortalLink>
                   </div>
                 </div>
               )}
