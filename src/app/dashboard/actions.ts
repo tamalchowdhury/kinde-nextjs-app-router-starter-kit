@@ -1,8 +1,9 @@
 "use server"
 
-import prisma from "../lib/prisma"
+import prisma from "@/lib/prisma"
 import { z } from "zod"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
+import { revalidatePath } from "next/cache"
 
 const AccountInput = z.object({
   name: z.string().min(1, "Name is required"),
@@ -13,11 +14,19 @@ const FEATURE_KEY = "tracked_accounts"
 
 // Add an account to track
 
-export async function addAccount(input: {
-  name: string
-  accountNumber: string
-}) {
-  const { name, accountNumber } = AccountInput.parse(input)
+export async function addAccountAction(formData: FormData) {
+  const raw = {
+    name: String(formData.get("name") ?? "").trim(),
+    accountNumber: String(formData.get("accountNumber") ?? "").trim(),
+  }
+
+  const parsed = AccountInput.safeParse(raw)
+  if (!parsed.success) {
+    const first = parsed.error.issues[0]
+    return { ok: false as const, error: first?.message ?? "Invalid input." }
+  }
+
+  const { name, accountNumber } = parsed.data
 
   // Get current user (Kinde)
   const { getUser } = getKindeServerSession()
@@ -61,6 +70,7 @@ export async function addAccount(input: {
         kindeId: user.id,
       },
     })
+    revalidatePath("/dashboard")
     return {
       ok: true as const,
       message: "Account added.",
@@ -74,7 +84,7 @@ export async function addAccount(input: {
 
 // Get all tracked accounts
 
-export async function getAccounts() {
+export async function getAccountsAction() {
   const { getUser } = getKindeServerSession()
   const user = await getUser()
   if (!user?.id) {
@@ -90,7 +100,7 @@ export async function getAccounts() {
 
 // Delete tracked accounts
 
-export async function deleteAccount({ id }: { id: string }) {
+export async function deleteAccountAction(formData: FormData) {
   const { getUser } = getKindeServerSession()
   const user = await getUser()
   if (!user?.id) {
@@ -98,6 +108,7 @@ export async function deleteAccount({ id }: { id: string }) {
   }
 
   // deleteMany ensures we only delete if it belongs to this user
+  const id = String(formData.get("id") || "")
   const result = await prisma.account.deleteMany({
     where: { id, kindeId: user.id },
   })
@@ -105,7 +116,8 @@ export async function deleteAccount({ id }: { id: string }) {
   if (result.count === 0) {
     return { ok: false as const, error: "Account not found or not allowed." }
   }
-  return { ok: true as const }
+  revalidatePath("/dashboard")
+  return result
 }
 
 // Helper: read the tracked_accounts limit from Kinde (Account API)

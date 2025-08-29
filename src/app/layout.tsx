@@ -1,25 +1,25 @@
-import "./globals.css";
+import "./globals.css"
 import {
   RegisterLink,
   LoginLink,
   LogoutLink,
   PortalLink,
-} from "@kinde-oss/kinde-auth-nextjs/components";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import Link from "next/link";
+} from "@kinde-oss/kinde-auth-nextjs/components"
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
+import Link from "next/link"
 
 export const metadata = {
   title: "Kinde Auth",
   description: "Kinde with NextJS App Router",
-};
+}
 
 export default async function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
-  const { isAuthenticated, getUser } = getKindeServerSession();
-  const user = await getUser();
+  const { isAuthenticated, getUser } = getKindeServerSession()
+  const user = await getUser()
   return (
     <html lang="en">
       <body>
@@ -73,11 +73,11 @@ export default async function RootLayout({
             </p>
 
             <small className="text-subtle">
-              © 2023 KindeAuth, Inc. All rights reserved
+              © 2025 KindeAuth, Inc. All rights reserved
             </small>
           </div>
         </footer>
       </body>
     </html>
-  );
+  )
 }
