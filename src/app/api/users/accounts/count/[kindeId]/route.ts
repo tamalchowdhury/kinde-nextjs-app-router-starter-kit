@@ -10,7 +10,7 @@ const ParamsSchema = z.object({
 })
 
 /**
- * GET /api/users/:kindeId/accounts/count
+ * GET /api/users/accounts/count/:kindeId
  * Response: { kindeId: string, count: number }
  */
 export async function GET(_req: Request, ctx: { params: { kindeId: string } }) {

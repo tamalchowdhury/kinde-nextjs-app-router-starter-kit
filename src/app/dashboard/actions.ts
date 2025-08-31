@@ -42,7 +42,7 @@ export async function addAccountAction(formData: FormData) {
   let limit: number | null = null
   try {
     limit = await getEntitlementLimit(FEATURE_KEY)
-    console.log(`The current entitlement limit for ${FEATURE_KEY} is ${limit}`)
+    console.log(`The current usage for ${FEATURE_KEY} is ${used}/${limit}`)
   } catch (e) {
     return {
       ok: false as const,
