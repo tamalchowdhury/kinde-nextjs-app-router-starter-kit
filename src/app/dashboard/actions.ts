@@ -94,7 +94,7 @@ export async function getAccountsAction() {
   return prisma.account.findMany({
     where: { kindeId: user.id },
     select: { id: true, name: true, accountNumber: true },
-    orderBy: { name: "asc" },
+    orderBy: { createdAt: "asc" },
   })
 }
 
